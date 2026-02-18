@@ -1,0 +1,36 @@
+name: Sports News Digest
+
+on:
+  schedule:
+    # 6:00 AM ET (11:00 UTC during EST, 10:00 UTC during EDT)
+    - cron: "0 11 * * *"
+    # 4:00 PM ET (21:00 UTC during EST, 20:00 UTC during EDT)
+    - cron: "0 21 * * *"
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install yt-dlp
+        run: pip install yt-dlp
+
+      - name: Send digest email
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        working-directory: src
+        run: python main.py
