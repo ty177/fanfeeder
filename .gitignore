@@ -2,5 +2,6 @@
 __pycache__/
 *.pyc
 preview.html
+.seen_cache.json
 .venv/
 venv/

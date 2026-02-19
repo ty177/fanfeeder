@@ -21,6 +21,7 @@ from dotenv import load_dotenv
 from config import EMAIL_RECIPIENT, EMAIL_SENDER, SMTP_PORT, SMTP_SERVER, TEAMS
 from email_builder import build_email
 from news_fetcher import fetch_news
+from seen_cache import filter_new_items
 from youtube_fetcher import fetch_videos
 
 logging.basicConfig(
@@ -85,6 +86,7 @@ def main():
 
     logger.info("Starting Sports News Digest")
     team_data = gather_team_data()
+    team_data = filter_new_items(team_data)
     html_content = build_email(team_data)
 
     if args.preview:

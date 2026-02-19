@@ -29,6 +29,14 @@ jobs:
       - name: Install yt-dlp
         run: pip install yt-dlp
 
+      - name: Restore seen-stories cache
+        uses: actions/cache@v4
+        with:
+          path: .seen_cache.json
+          key: seen-cache-${{ github.run_id }}
+          restore-keys: |
+            seen-cache-
+
       - name: Send digest email
         env:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
