@@ -20,6 +20,7 @@ from dotenv import load_dotenv
 
 from config import EMAIL_RECIPIENT, EMAIL_SENDER, SMTP_PORT, SMTP_SERVER, TEAMS
 from email_builder import build_email
+from logo_checker import verify_logos
 from news_fetcher import fetch_news
 from seen_cache import filter_new_items
 from youtube_fetcher import fetch_videos
@@ -85,6 +86,7 @@ def main():
     args = parser.parse_args()
 
     logger.info("Starting Sports News Digest")
+    verify_logos(TEAMS)
     team_data = gather_team_data()
     team_data = filter_new_items(team_data)
     html_content = build_email(team_data)

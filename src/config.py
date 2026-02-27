@@ -8,7 +8,7 @@ TEAMS = [
         "primary_color": "#6CABDD",
         "secondary_color": "#FFFFFF",
         "text_color": "#FFFFFF",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/180px-Manchester_City_FC_badge.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/250px-Manchester_City_FC_badge.svg.png",
         "news_query": "Manchester City FC",
         "youtube_query": "Manchester City FC highlights",
         "youtube_channels": [
@@ -22,7 +22,7 @@ TEAMS = [
         "primary_color": "#004D98",
         "secondary_color": "#A50044",
         "text_color": "#FFFFFF",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/180px-FC_Barcelona_%28crest%29.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/250px-FC_Barcelona_%28crest%29.svg.png",
         "news_query": "FC Barcelona men",
         "youtube_query": "FC Barcelona highlights",
         "youtube_channels": [
@@ -36,7 +36,7 @@ TEAMS = [
         "primary_color": "#1D428A",
         "secondary_color": "#FFC72C",
         "text_color": "#FFC72C",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/0/01/Golden_State_Warriors_logo.svg/180px-Golden_State_Warriors_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/0/01/Golden_State_Warriors_logo.svg/250px-Golden_State_Warriors_logo.svg.png",
         "news_query": "Golden State Warriors",
         "youtube_query": "Golden State Warriors highlights",
         "youtube_channels": [
@@ -50,7 +50,7 @@ TEAMS = [
         "primary_color": "#AA0000",
         "secondary_color": "#B3995D",
         "text_color": "#B3995D",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/San_Francisco_49ers_logo.svg/180px-San_Francisco_49ers_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/San_Francisco_49ers_logo.svg/120px-San_Francisco_49ers_logo.svg.png",
         "news_query": "San Francisco 49ers",
         "youtube_query": "San Francisco 49ers highlights",
         "youtube_channels": [
