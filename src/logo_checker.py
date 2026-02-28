@@ -10,14 +10,6 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-# Wikipedia pages for each team, keyed by team name
-WIKIPEDIA_PAGES = {
-    "Manchester City FC": "https://en.wikipedia.org/wiki/Manchester_City_F.C.",
-    "FC Barcelona": "https://en.wikipedia.org/wiki/FC_Barcelona",
-    "Golden State Warriors": "https://en.wikipedia.org/wiki/Golden_State_Warriors",
-    "San Francisco 49ers": "https://en.wikipedia.org/wiki/San_Francisco_49ers",
-}
-
 REQUEST_TIMEOUT = 10
 HEADERS = {
     "User-Agent": "SportDigestBot/1.0 (logo verification)",
@@ -38,11 +30,15 @@ def _is_url_reachable(url: str) -> bool:
         return False
 
 
-def _find_logo_on_wikipedia(team_name: str) -> str | None:
-    """Scrape the team's Wikipedia page to find the infobox logo/crest image URL."""
-    wiki_url = WIKIPEDIA_PAGES.get(team_name)
+def _find_logo_on_wikipedia(team: dict) -> str | None:
+    """Scrape the team's Wikipedia page to find the infobox logo/crest image URL.
+
+    Reads the wikipedia_url from the team dict (populated from teams.json).
+    """
+    team_name = team.get("name", "Unknown")
+    wiki_url = team.get("wikipedia_url")
     if not wiki_url:
-        logger.warning(f"No Wikipedia page configured for '{team_name}'")
+        logger.warning(f"No Wikipedia URL for '{team_name}'")
         return None
 
     try:
@@ -127,7 +123,7 @@ def verify_logos(teams: list[dict]) -> list[dict]:
 
         if not logo_url:
             logger.warning(f"{name}: No logo URL configured")
-            fallback = _find_logo_on_wikipedia(name)
+            fallback = _find_logo_on_wikipedia(team)
             if fallback:
                 team["logo_url"] = fallback
                 logger.info(f"{name}: Set logo from Wikipedia")
@@ -137,7 +133,7 @@ def verify_logos(teams: list[dict]) -> list[dict]:
             logger.info(f"{name}: Logo OK")
         else:
             logger.warning(f"{name}: Logo unreachable, searching Wikipedia...")
-            fallback = _find_logo_on_wikipedia(name)
+            fallback = _find_logo_on_wikipedia(team)
             if fallback and _is_url_reachable(fallback):
                 team["logo_url"] = fallback
                 logger.info(f"{name}: Replaced logo with Wikipedia fallback")

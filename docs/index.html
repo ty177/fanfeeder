@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FanFeeder - Daily Sports Digest</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>FanFeeder</h1>
+    <p class="tagline">Your personalized daily sports news digest</p>
+  </header>
+
+  <main>
+    <section id="intro">
+      <p>Pick your favorite teams and get top headlines + YouTube highlights delivered to your inbox every day at <strong>6 AM</strong> and <strong>4 PM ET</strong>.</p>
+    </section>
+
+    <section id="picker">
+      <h2>1. Choose Your Teams</h2>
+      <div id="sport-tabs"></div>
+      <div id="league-tabs"></div>
+      <div id="team-grid"></div>
+    </section>
+
+    <section id="selected-section" style="display:none;">
+      <h2>Your Teams <span id="selected-count">(0)</span></h2>
+      <div id="selected-teams"></div>
+    </section>
+
+    <section id="signup">
+      <h2>2. Enter Your Email</h2>
+      <form id="subscribe-form" action="https://formspree.io/f/{FORM_ID}" method="POST">
+        <input type="email" name="email" id="email-input" placeholder="you@example.com" required>
+        <input type="hidden" name="teams" id="teams-input">
+        <button type="submit" id="submit-btn" disabled>Subscribe</button>
+      </form>
+      <p id="form-status"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>FanFeeder &mdash; Built with care. <a href="https://github.com/ty177/fanfeeder">Source</a></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

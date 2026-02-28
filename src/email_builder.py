@@ -5,6 +5,9 @@ from __future__ import annotations
 import html
 from datetime import datetime, timezone
 from typing import Optional
+from urllib.parse import quote
+
+from config import SITE_URL
 
 
 def _escape(text: str) -> str:
@@ -156,11 +159,12 @@ def _build_team_section(team: dict, headlines: list[dict], videos: list[dict]) -
     return header + headlines_html + videos_html + bottom
 
 
-def build_email(team_data: list[dict]) -> str:
+def build_email(team_data: list[dict], subscriber_email: str = "") -> str:
     """Build the full HTML email.
 
     Args:
         team_data: list of dicts with keys: team, headlines, videos
+        subscriber_email: subscriber's email for unsubscribe link
 
     Returns:
         Complete HTML string for the email.
@@ -171,6 +175,19 @@ def build_email(team_data: list[dict]) -> str:
     sections = ""
     for td in team_data:
         sections += _build_team_section(td["team"], td["headlines"], td["videos"])
+
+    # Build footer with unsubscribe + manage links
+    unsubscribe_url = f"{SITE_URL}/unsubscribe.html?email={quote(subscriber_email)}" if subscriber_email else ""
+    manage_url = f"{SITE_URL}/"
+
+    footer_links = ""
+    if subscriber_email:
+        footer_links = f"""
+              <p style="font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: #bbb; margin: 8px 0 0 0;">
+                <a href="{manage_url}" style="color: #999; text-decoration: underline;">Manage your teams</a>
+                &nbsp;&bull;&nbsp;
+                <a href="{unsubscribe_url}" style="color: #999; text-decoration: underline;">Unsubscribe</a>
+              </p>"""
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -208,8 +225,9 @@ def build_email(team_data: list[dict]) -> str:
           <tr>
             <td style="text-align: center; padding: 28px 0 12px 0;">
               <p style="font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: #bbb; margin: 0;">
-                Generated automatically &bull; Sports News Digest
+                Generated automatically &bull; FanFeeder Sports Digest
               </p>
+              {footer_links}
             </td>
           </tr>
 

@@ -1,0 +1,10 @@
+{
+  "subscribers": [
+    {
+      "email": "tyahma@gmail.com",
+      "teams": ["epl-manchester-city", "laliga-fc-barcelona", "nba-golden-state-warriors", "nfl-san-francisco-49ers"],
+      "subscribed_at": "2025-02-18T00:00:00Z",
+      "active": true
+    }
+  ]
+}

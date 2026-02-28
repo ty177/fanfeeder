@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unsubscribe - FanFeeder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>FanFeeder</h1>
+    <p class="tagline">Unsubscribe</p>
+  </header>
+  <main>
+    <section id="intro">
+      <p>Sorry to see you go! Enter your email below to unsubscribe from daily digests.</p>
+    </section>
+    <section>
+      <form id="unsub-form" action="https://formspree.io/f/{FORM_ID}" method="POST">
+        <input type="hidden" name="_subject" value="Unsubscribe Request">
+        <input type="hidden" name="action" value="unsubscribe">
+        <div id="subscribe-form" style="display:flex;gap:0.5rem;max-width:500px;">
+          <input type="email" name="email" id="email-input" placeholder="you@example.com" required>
+          <button type="submit" id="submit-btn" style="background:#f44336;">Unsubscribe</button>
+        </div>
+      </form>
+      <p id="form-status" style="margin-top:0.5rem;font-size:0.9rem;"></p>
+    </section>
+  </main>
+  <footer>
+    <p><a href="index.html">Back to FanFeeder</a></p>
+  </footer>
+  <script>
+    document.getElementById("unsub-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const status = document.getElementById("form-status");
+      try {
+        const resp = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" }
+        });
+        if (resp.ok) {
+          status.textContent = "You've been unsubscribed. You won't receive any more digests.";
+          status.style.color = "#4caf50";
+        } else { throw new Error(); }
+      } catch {
+        status.textContent = "Something went wrong. Please try again.";
+        status.style.color = "#f44336";
+      }
+    });
+  </script>
+</body>
+</html>
