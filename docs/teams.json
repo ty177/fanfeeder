@@ -8,6 +8,7 @@
           "name": "Premier League",
           "slug": "epl",
           "country": "England",
+          "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Premier_League_Logo.svg/250px-Premier_League_Logo.svg.png",
           "teams": [
             {
               "id": "epl-afc-bournemouth",
@@ -275,6 +276,7 @@
           "name": "La Liga",
           "slug": "laliga",
           "country": "Spain",
+          "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/LaLiga_EA_Sports_2023_Vertical_Logo.svg/250px-LaLiga_EA_Sports_2023_Vertical_Logo.svg.png",
           "teams": [
             {
               "id": "laliga-athletic-bilbao",
@@ -542,6 +544,7 @@
           "name": "Bundesliga",
           "slug": "bundesliga",
           "country": "Germany",
+          "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/d/df/Bundesliga_logo_%282017%29.svg/250px-Bundesliga_logo_%282017%29.svg.png",
           "teams": [
             {
               "id": "bundesliga-heidenheim",
@@ -783,6 +786,7 @@
           "name": "Serie A",
           "slug": "seriea",
           "country": "Italy",
+          "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/a/ab/Serie_A_ENILIVE_logo.svg/250px-Serie_A_ENILIVE_logo.svg.png",
           "teams": [
             {
               "id": "seriea-ac-milan",
@@ -1050,6 +1054,7 @@
           "name": "Ligue 1",
           "slug": "ligue1",
           "country": "France",
+          "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Logo_Ligue_1_McDonald%27s_2024.svg/250px-Logo_Ligue_1_McDonald%27s_2024.svg.png",
           "teams": [
             {
               "id": "ligue1-auxerre",
@@ -1290,7 +1295,7 @@
       ]
     },
     {
-      "name": "Basketball",
+      "name": "NBA",
       "slug": "basketball",
       "leagues": [
         {
@@ -1693,7 +1698,7 @@
       ]
     },
     {
-      "name": "American Football",
+      "name": "NFL",
       "slug": "american-football",
       "leagues": [
         {
@@ -2122,7 +2127,7 @@
       ]
     },
     {
-      "name": "Baseball",
+      "name": "MLB",
       "slug": "baseball",
       "leagues": [
         {
@@ -2525,7 +2530,7 @@
       ]
     },
     {
-      "name": "Ice Hockey",
+      "name": "NHL",
       "slug": "hockey",
       "leagues": [
         {

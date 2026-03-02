@@ -72,6 +72,25 @@ h2 {
 .tab:hover { border-color: #ff6b35; color: #fff; }
 .tab.active { background: #ff6b35; color: #fff; border-color: #ff6b35; }
 
+.tab-logo {
+  padding: 0.3rem 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.league-logo {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0.9);
+}
+
+.tab-logo:hover .league-logo,
+.tab-logo.active .league-logo {
+  filter: brightness(1.1);
+}
+
 /* Team grid */
 #team-grid {
   display: grid;
@@ -205,4 +224,5 @@ footer a:hover { text-decoration: underline; }
   #team-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
   #subscribe-form { flex-direction: column; }
   .team-logo { width: 32px; height: 32px; }
+  .league-logo { height: 22px; }
 }

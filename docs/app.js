@@ -52,7 +52,22 @@
     leagues.forEach((league, i) => {
       const tab = document.createElement("button");
       tab.className = "tab";
-      tab.textContent = league.name;
+      if (league.logo_url) {
+        tab.classList.add("tab-logo");
+        const img = document.createElement("img");
+        img.src = league.logo_url;
+        img.alt = league.name;
+        img.title = league.name;
+        img.className = "league-logo";
+        img.onerror = function () {
+          this.remove();
+          tab.textContent = league.name;
+          tab.classList.remove("tab-logo");
+        };
+        tab.appendChild(img);
+      } else {
+        tab.textContent = league.name;
+      }
       tab.addEventListener("click", () => selectLeague(i));
       leagueTabs.appendChild(tab);
     });
