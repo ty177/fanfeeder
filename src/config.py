@@ -16,5 +16,5 @@ SMTP_PORT = 587
 MAX_HEADLINES_PER_TEAM = 5
 MAX_VIDEOS_PER_TEAM = 3
 
-# Site URL (for unsubscribe links)
-SITE_URL = "https://www.fire-exit.com/fanfeeder"
+# GitHub Pages URL (for unsubscribe links)
+SITE_URL = "https://ty177.github.io/fanfeeder"
