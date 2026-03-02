@@ -78,6 +78,8 @@ h2 {
   align-items: center;
   justify-content: center;
   width: 80px;
+  background: #ffffff;
+  border-color: #ddd;
 }
 
 .league-logo {
