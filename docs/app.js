@@ -68,13 +68,34 @@
 
   function renderTeams() {
     teamGrid.innerHTML = "";
-    const teams = teamsData.sports[activeSport].leagues[activeLeague].teams;
+    const teams = [...teamsData.sports[activeSport].leagues[activeLeague].teams]
+      .sort((a, b) => a.name.localeCompare(b.name));
     teams.forEach(team => {
       const card = document.createElement("div");
       card.className = "team-card" + (selectedTeams.has(team.id) ? " selected" : "");
       card.style.backgroundColor = team.primary_color;
       card.style.color = team.text_color;
-      card.textContent = team.short_name;
+
+      const label = document.createElement("span");
+      label.className = "team-label";
+      label.textContent = team.short_name;
+
+      if (team.logo_url) {
+        const img = document.createElement("img");
+        img.src = team.logo_url;
+        img.alt = team.short_name;
+        img.className = "team-logo";
+        img.loading = "lazy";
+        img.onerror = function () {
+          this.style.display = "none";
+          label.classList.add("no-logo");
+        };
+        card.appendChild(img);
+      } else {
+        label.classList.add("no-logo");
+      }
+
+      card.appendChild(label);
       card.addEventListener("click", () => toggleTeam(team));
       teamGrid.appendChild(card);
     });
@@ -116,7 +137,10 @@
       chip.className = "selected-chip";
       chip.style.backgroundColor = team.primary_color;
       chip.style.color = team.text_color;
-      chip.innerHTML = team.short_name + ' <span class="remove">&times;</span>';
+      const logoHtml = team.logo_url
+        ? '<img src="' + team.logo_url + '" alt="" class="chip-logo">'
+        : '';
+      chip.innerHTML = logoHtml + team.short_name + ' <span class="remove">&times;</span>';
       chip.querySelector(".remove").addEventListener("click", () => toggleTeam(team));
       selectedTeamsEl.appendChild(chip);
     });
