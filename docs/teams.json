@@ -2957,6 +2957,150 @@
                               ]
                         }
                   ]
+            },
+            {
+                  "name": "Formula 1",
+                  "slug": "f1",
+                  "leagues": [
+                        {
+                              "name": "Formula 1",
+                              "slug": "f1",
+                              "country": "International",
+                              "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/F1_%28registered_trademark%29.svg/250px-F1_%28registered_trademark%29.svg.png",
+                              "teams": [
+                                    {
+                                          "id": "f1-alpine",
+                                          "name": "Alpine F1 Team",
+                                          "short_name": "Alpine",
+                                          "primary_color": "#0093CC",
+                                          "secondary_color": "#FF87BC",
+                                          "text_color": "#FFFFFF",
+                                          "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/BWT_Alpine_F1_Team_Logo.png/250px-BWT_Alpine_F1_Team_Logo.png",
+                                          "wikipedia_url": "https://en.wikipedia.org/wiki/Alpine_F1_Team",
+                                          "news_query": "Alpine F1",
+                                          "youtube_query": "Alpine F1 highlights",
+                                          "youtube_channels": []
+                                    },
+                                    {
+                                          "id": "f1-aston-martin",
+                                          "name": "Aston Martin Aramco F1 Team",
+                                          "short_name": "Aston Martin",
+                                          "primary_color": "#006F62",
+                                          "secondary_color": "#CEDC00",
+                                          "text_color": "#FFFFFF",
+                                          "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/1/15/Aston_Martin_Aramco_2024_logo.png/250px-Aston_Martin_Aramco_2024_logo.png",
+                                          "wikipedia_url": "https://en.wikipedia.org/wiki/Aston_Martin_in_Formula_One",
+                                          "news_query": "Aston Martin F1",
+                                          "youtube_query": "Aston Martin F1 highlights",
+                                          "youtube_channels": []
+                                    },
+                                    {
+                                          "id": "f1-ferrari",
+                                          "name": "Scuderia Ferrari",
+                                          "short_name": "Ferrari",
+                                          "primary_color": "#E8002D",
+                                          "secondary_color": "#FFEB00",
+                                          "text_color": "#FFFFFF",
+                                          "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/d/df/Scuderia_Ferrari_HP_logo_24.svg/250px-Scuderia_Ferrari_HP_logo_24.svg.png",
+                                          "wikipedia_url": "https://en.wikipedia.org/wiki/Scuderia_Ferrari",
+                                          "news_query": "Scuderia Ferrari F1",
+                                          "youtube_query": "Ferrari F1 highlights",
+                                          "youtube_channels": []
+                                    },
+                                    {
+                                          "id": "f1-haas",
+                                          "name": "Haas F1 Team",
+                                          "short_name": "Haas",
+                                          "primary_color": "#B6BABD",
+                                          "secondary_color": "#E6002D",
+                                          "text_color": "#000000",
+                                          "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/TGR_Haas_F1_Team_Logo_%282026%29.svg/250px-TGR_Haas_F1_Team_Logo_%282026%29.svg.png",
+                                          "wikipedia_url": "https://en.wikipedia.org/wiki/Haas_F1_Team",
+                                          "news_query": "Haas F1",
+                                          "youtube_query": "Haas F1 highlights",
+                                          "youtube_channels": []
+                                    },
+                                    {
+                                          "id": "f1-mclaren",
+                                          "name": "McLaren F1 Team",
+                                          "short_name": "McLaren",
+                                          "primary_color": "#FF8000",
+                                          "secondary_color": "#47C7FC",
+                                          "text_color": "#000000",
+                                          "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/6/66/McLaren_Racing_logo.svg/250px-McLaren_Racing_logo.svg.png",
+                                          "wikipedia_url": "https://en.wikipedia.org/wiki/McLaren",
+                                          "news_query": "McLaren F1",
+                                          "youtube_query": "McLaren F1 highlights",
+                                          "youtube_channels": []
+                                    },
+                                    {
+                                          "id": "f1-mercedes",
+                                          "name": "Mercedes-AMG Petronas F1 Team",
+                                          "short_name": "Mercedes",
+                                          "primary_color": "#27F4D2",
+                                          "secondary_color": "#000000",
+                                          "text_color": "#000000",
+                                          "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mercedes-AMG_Petronas_Formula_One_Team_Logo_%282026%29.webp/250px-Mercedes-AMG_Petronas_Formula_One_Team_Logo_%282026%29.webp.png",
+                                          "wikipedia_url": "https://en.wikipedia.org/wiki/Mercedes-AMG_Petronas_Formula_One_Team",
+                                          "news_query": "Mercedes F1",
+                                          "youtube_query": "Mercedes F1 highlights",
+                                          "youtube_channels": []
+                                    },
+                                    {
+                                          "id": "f1-rb",
+                                          "name": "Visa Cash App RB F1 Team",
+                                          "short_name": "RB",
+                                          "primary_color": "#6692FF",
+                                          "secondary_color": "#FFFFFF",
+                                          "text_color": "#FFFFFF",
+                                          "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/2/2b/VCARB_F1_logo.svg/250px-VCARB_F1_logo.svg.png",
+                                          "wikipedia_url": "https://en.wikipedia.org/wiki/RB_Formula_One_Team",
+                                          "news_query": "VCARB F1",
+                                          "youtube_query": "RB F1 Team highlights",
+                                          "youtube_channels": []
+                                    },
+                                    {
+                                          "id": "f1-red-bull",
+                                          "name": "Red Bull Racing",
+                                          "short_name": "Red Bull",
+                                          "primary_color": "#3671C6",
+                                          "secondary_color": "#FCD700",
+                                          "text_color": "#FFFFFF",
+                                          "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/f/fa/Red_Bull_Racing_Logo_2026.svg/250px-Red_Bull_Racing_Logo_2026.svg.png",
+                                          "wikipedia_url": "https://en.wikipedia.org/wiki/Red_Bull_Racing",
+                                          "news_query": "Red Bull Racing F1",
+                                          "youtube_query": "Red Bull Racing F1 highlights",
+                                          "youtube_channels": []
+                                    },
+                                    {
+                                          "id": "f1-sauber",
+                                          "name": "Kick Sauber F1 Team",
+                                          "short_name": "Sauber",
+                                          "primary_color": "#52E252",
+                                          "secondary_color": "#000000",
+                                          "text_color": "#000000",
+                                          "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/b/b7/Sauber_Motorsport_SVG_logo_%282023%29.svg/250px-Sauber_Motorsport_SVG_logo_%282023%29.svg.png",
+                                          "wikipedia_url": "https://en.wikipedia.org/wiki/Stake_F1_Team_Kick_Sauber",
+                                          "news_query": "Kick Sauber F1",
+                                          "youtube_query": "Sauber F1 highlights",
+                                          "youtube_channels": []
+                                    },
+                                    {
+                                          "id": "f1-williams",
+                                          "name": "Williams Racing",
+                                          "short_name": "Williams",
+                                          "primary_color": "#005AFF",
+                                          "secondary_color": "#00A0DE",
+                                          "text_color": "#FFFFFF",
+                                          "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Williams_F1_logo_2026_%28Corrigindo%29.png/250px-Williams_F1_logo_2026_%28Corrigindo%29.png",
+                                          "wikipedia_url": "https://en.wikipedia.org/wiki/Williams_Racing",
+                                          "news_query": "Williams Racing F1",
+                                          "youtube_query": "Williams F1 highlights",
+                                          "youtube_channels": []
+                                    }
+                              ]
+                        }
+                  ]
             }
       ]
 }
