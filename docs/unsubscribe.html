@@ -31,6 +31,11 @@
     <p><a href="index.html">Back to FanFeeder</a></p>
   </footer>
   <script>
+    // Pre-fill email from ?email= query param (set by the unsubscribe link in emails)
+    const params = new URLSearchParams(window.location.search);
+    const preEmail = params.get("email");
+    if (preEmail) document.getElementById("email-input").value = preEmail;
+
     document.getElementById("unsub-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const form = e.target;

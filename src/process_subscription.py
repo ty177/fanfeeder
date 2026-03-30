@@ -31,6 +31,9 @@ def process_submissions(submissions: list[dict]) -> bool:
     existing = {s["email"]: s for s in data["subscribers"]}
     changed = False
 
+    # Sort oldest-first so the most recent action per email wins
+    submissions = sorted(submissions, key=lambda s: s.get("created_at") or s.get("_date") or "")
+
     for sub in submissions:
         email = sub.get("email", "").strip().lower()
         if not email:
