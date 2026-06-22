@@ -3,35 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unsubscribe - FanFeeder</title>
+  <title>Unsubscribe — FanFeeder</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>FanFeeder</h1>
-    <p class="tagline">Unsubscribe</p>
-  </header>
-  <main>
-    <section id="intro">
-      <p>Sorry to see you go! Enter your email below to unsubscribe from daily digests.</p>
-    </section>
-    <section>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">Fan<span class="dot">·</span>Feeder</a>
+    <ul class="nav-links">
+      <li><a href="manage.html">Manage Teams</a></li>
+      <li><a href="index.html" class="nav-cta">Subscribe</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <h1>Unsubscribe</h1>
+    <p>Sorry to see you go. Enter your email to stop receiving digests.</p>
+  </div>
+
+  <main style="max-width:520px;">
+    <div class="card">
       <form id="unsub-form" action="https://formspree.io/f/mzdawwjk" method="POST">
         <input type="hidden" name="_subject" value="Unsubscribe Request">
         <input type="hidden" name="action" value="unsubscribe">
-        <div id="subscribe-form" style="display:flex;gap:0.5rem;max-width:500px;">
-          <input type="email" name="email" id="email-input" placeholder="you@example.com" required>
-          <button type="submit" id="submit-btn" style="background:#f44336;">Unsubscribe</button>
+        <div class="email-row">
+          <input type="email" name="email" id="email-input" class="email-input" placeholder="you@example.com" required>
+          <button type="submit" id="submit-btn" class="btn-primary" style="background:#ef4444;">Unsubscribe</button>
         </div>
       </form>
-      <p id="form-status" style="margin-top:0.5rem;font-size:0.9rem;"></p>
-    </section>
+      <p id="form-status" class="form-status"></p>
+    </div>
+
+    <p style="text-align:center;margin-top:1rem;font-size:0.8rem;color:var(--text-2);">
+      Changed your mind? <a href="manage.html" style="color:var(--accent);text-decoration:none;font-weight:600;">Update your teams instead →</a>
+    </p>
   </main>
+
   <footer>
-    <p><a href="index.html">Back to FanFeeder</a></p>
+    <a href="index.html" class="footer-brand">FanFeeder</a>
+    <div class="footer-links">
+      <a href="manage.html">Manage Teams</a>
+      <a href="index.html">Subscribe</a>
+      <a href="https://github.com/ty177/fanfeeder">GitHub</a>
+    </div>
   </footer>
+
   <script>
-    // Pre-fill email from ?email= query param (set by the unsubscribe link in emails)
     const params = new URLSearchParams(window.location.search);
     const preEmail = params.get("email");
     if (preEmail) document.getElementById("email-input").value = preEmail;
@@ -40,6 +57,10 @@
       e.preventDefault();
       const form = e.target;
       const status = document.getElementById("form-status");
+      const btn = document.getElementById("submit-btn");
+      btn.disabled = true;
+      status.textContent = "Processing…";
+      status.className = "form-status";
       try {
         const resp = await fetch(form.action, {
           method: "POST",
@@ -48,11 +69,12 @@
         });
         if (resp.ok) {
           status.textContent = "You've been unsubscribed. You won't receive any more digests.";
-          status.style.color = "#4caf50";
+          status.className = "form-status status-success";
         } else { throw new Error(); }
       } catch {
         status.textContent = "Something went wrong. Please try again.";
-        status.style.color = "#f44336";
+        status.className = "form-status status-error";
+        btn.disabled = false;
       }
     });
   </script>

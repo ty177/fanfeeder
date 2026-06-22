@@ -3,49 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FanFeeder - Daily Sports Digest</title>
+  <title>FanFeeder — Daily Sports Digest</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>FanFeeder</h1>
-    <p class="tagline">Your personalized daily sports news digest.</p>
-  </header>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">Fan<span class="dot">·</span>Feeder</a>
+    <ul class="nav-links">
+      <li><a href="manage.html">Manage Teams</a></li>
+      <li><a href="unsubscribe.html">Unsubscribe</a></li>
+      <li><a href="index.html" class="nav-cta active">Subscribe</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <span class="hero-eyebrow">⚡ Twice-daily digest</span>
+    <h1>Your teams.<br><em>Every morning.</em></h1>
+    <p class="hero-sub">Top headlines and YouTube highlights from your favourite teams, delivered at 6 AM and 4 PM ET.</p>
+  </section>
 
   <main>
-    <section id="intro">
-      <p>Pick your favorite teams and get top headlines + YouTube highlights delivered to your inbox every day at <strong>6 AM</strong> and <strong>4 PM ET</strong>.</p>
-    </section>
-
-    <section id="picker">
-      <h2>1. Choose Your Teams</h2>
+    <section id="picker" class="card">
+      <div class="section-label">
+        <span class="step-num">1</span>
+        <h2>Choose Your Teams</h2>
+      </div>
       <div id="sport-tabs"></div>
       <div id="league-tabs"></div>
       <div id="team-grid"></div>
     </section>
 
-    <section id="selected-section" style="display:none;">
-      <h2>Your Teams <span id="selected-count">(0)</span></h2>
+    <section id="selected-section" class="card" style="display:none;">
+      <div class="section-label" style="margin-bottom:0.75rem;">
+        <h2>Your Teams <span id="selected-count" style="color:var(--text-2);font-weight:500;">(0)</span></h2>
+      </div>
       <div id="selected-teams"></div>
     </section>
 
-    <section id="signup">
-      <h2>2. Enter Your Email</h2>
+    <section id="signup" class="card">
+      <div class="section-label">
+        <span class="step-num">2</span>
+        <h2>Subscribe</h2>
+      </div>
       <form id="subscribe-form" action="https://formspree.io/f/mzdawwjk" method="POST">
-        <input type="email" name="email" id="email-input" placeholder="you@example.com" required>
-        <input type="hidden" name="teams" id="teams-input">
-        <button type="submit" id="submit-btn" disabled>Subscribe</button>
+        <div class="email-row">
+          <input type="email" name="email" id="email-input" class="email-input" placeholder="you@example.com" required>
+          <input type="hidden" name="teams" id="teams-input">
+          <button type="submit" id="submit-btn" class="btn-primary" disabled>Get My Digest</button>
+        </div>
       </form>
-      <p id="form-status"></p>
+      <p id="form-status" class="form-status"></p>
     </section>
   </main>
 
   <footer>
-    <p>
-      <a href="manage.html">Manage your teams</a> &mdash;
-      <a href="unsubscribe.html">Unsubscribe</a> &mdash;
-      <a href="https://github.com/ty177/fanfeeder">Source</a>
-    </p>
+    <a href="index.html" class="footer-brand">FanFeeder</a>
+    <div class="footer-links">
+      <a href="manage.html">Manage Teams</a>
+      <a href="unsubscribe.html">Unsubscribe</a>
+      <a href="https://github.com/ty177/fanfeeder">GitHub</a>
+    </div>
   </footer>
 
   <script src="app.js"></script>
