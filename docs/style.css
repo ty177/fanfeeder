@@ -60,6 +60,7 @@ nav.site-nav {
 }
 
 .nav-logo .dot { color: var(--accent); }
+.nav-logo .accent { color: var(--accent); }
 
 .nav-links {
   display: flex;
