@@ -85,6 +85,33 @@ def process_submissions(submissions: list[dict]) -> bool:
     return changed
 
 
+def write_subscribers_index(data: dict | None = None) -> None:
+    """Write docs/subscribers_index.json mapping sha256(email) -> [team_ids].
+
+    This lets the manage page look up a subscriber's current teams client-side
+    without exposing raw email addresses.
+    """
+    import hashlib
+
+    if data is None:
+        data = load_subscribers()
+
+    docs_dir = Path(__file__).parent.parent / "docs"
+    index = {}
+    for sub in data["subscribers"]:
+        if not sub.get("active", True):
+            continue
+        email = sub.get("email", "").strip().lower()
+        if not email:
+            continue
+        h = hashlib.sha256(email.encode()).hexdigest()
+        index[h] = sub.get("teams", [])
+
+    out_path = docs_dir / "subscribers_index.json"
+    out_path.write_text(json.dumps(index), encoding="utf-8")
+    print(f"subscribers_index.json written ({len(index)} active subscribers)")
+
+
 def fetch_formspree_submissions() -> list[dict]:
     """Fetch recent submissions from Formspree API."""
     import requests
@@ -112,6 +139,7 @@ def main() -> None:
         print("Subscribers updated")
     else:
         print("No changes")
+    write_subscribers_index()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Teams - FanFeeder</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    #lookup-section { margin-bottom: 1.5rem; }
+    #lookup-form { display: flex; gap: 0.5rem; max-width: 500px; }
+    #lookup-status { margin-top: 0.5rem; font-size: 0.9rem; color: #8899aa; }
+    #picker-section { display: none; }
+    #save-form { display: flex; flex-direction: column; gap: 0.75rem; max-width: 500px; }
+    #save-status { font-size: 0.9rem; }
+    .status-success { color: #4caf50; }
+    .status-error { color: #f44336; }
+    .current-badge {
+      display: inline-block;
+      margin-bottom: 0.75rem;
+      padding: 0.35rem 0.75rem;
+      background: #1a2a3a;
+      border: 1px solid #2a3a4a;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: #8899aa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FanFeeder</h1>
+    <p class="tagline">Manage Your Teams</p>
+  </header>
+
+  <main>
+    <!-- Step 1: look up email -->
+    <section id="lookup-section">
+      <h2>1. Enter Your Email</h2>
+      <div id="lookup-form">
+        <input type="email" id="lookup-email" placeholder="you@example.com" autocomplete="email">
+        <button id="lookup-btn">Load My Teams</button>
+      </div>
+      <p id="lookup-status"></p>
+    </section>
+
+    <!-- Step 2: picker (hidden until lookup succeeds) -->
+    <section id="picker-section">
+      <h2>2. Choose Your Teams</h2>
+      <p class="current-badge" id="current-label"></p>
+      <div id="sport-tabs"></div>
+      <div id="league-tabs"></div>
+      <div id="team-grid"></div>
+    </section>
+
+    <section id="selected-section" style="display:none;">
+      <h2>Your Teams <span id="selected-count">(0)</span></h2>
+      <div id="selected-teams"></div>
+    </section>
+
+    <!-- Step 3: save -->
+    <section id="save-section" style="display:none;">
+      <h2>3. Save Changes</h2>
+      <form id="save-form" action="https://formspree.io/f/mzdawwjk" method="POST">
+        <input type="hidden" name="action" value="subscribe">
+        <input type="hidden" name="email" id="form-email">
+        <input type="hidden" name="teams" id="teams-input">
+        <button type="submit" id="submit-btn" disabled>Save My Teams</button>
+      </form>
+      <p id="save-status"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      <a href="index.html">Subscribe</a> &mdash;
+      <a href="unsubscribe.html">Unsubscribe</a> &mdash;
+      <a href="https://github.com/ty177/fanfeeder">Source</a>
+    </p>
+  </footer>
+
+  <script>
+  (() => {
+    const FORMSPREE_ENDPOINT = "https://formspree.io/f/mzdawwjk";
+    const INDEX_URL = "subscribers_index.json";
+
+    let teamsData = null;
+    let selectedTeams = new Set();
+    let activeSport = 0;
+    let activeLeague = 0;
+    let userEmail = "";
+
+    // Elements
+    const lookupEmail = document.getElementById("lookup-email");
+    const lookupBtn   = document.getElementById("lookup-btn");
+    const lookupStatus = document.getElementById("lookup-status");
+    const pickerSection = document.getElementById("picker-section");
+    const saveSection  = document.getElementById("save-section");
+    const currentLabel = document.getElementById("current-label");
+    const sportTabs    = document.getElementById("sport-tabs");
+    const leagueTabs   = document.getElementById("league-tabs");
+    const teamGrid     = document.getElementById("team-grid");
+    const selectedSection = document.getElementById("selected-section");
+    const selectedTeamsEl = document.getElementById("selected-teams");
+    const selectedCount = document.getElementById("selected-count");
+    const teamsInput   = document.getElementById("teams-input");
+    const formEmailEl  = document.getElementById("form-email");
+    const submitBtn    = document.getElementById("submit-btn");
+    const saveForm     = document.getElementById("save-form");
+    const saveStatus   = document.getElementById("save-status");
+
+    // Pre-fill email from ?email= query param (set by the manage link in digest emails)
+    const params = new URLSearchParams(window.location.search);
+    const preEmail = params.get("email");
+    if (preEmail) lookupEmail.value = preEmail;
+
+    async function sha256hex(str) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    async function loadTeams() {
+      if (teamsData) return;
+      const resp = await fetch("teams.json");
+      teamsData = await resp.json();
+    }
+
+    lookupBtn.addEventListener("click", async () => {
+      const raw = lookupEmail.value.trim().toLowerCase();
+      if (!raw) { lookupStatus.textContent = "Please enter your email."; return; }
+
+      lookupBtn.disabled = true;
+      lookupStatus.textContent = "Looking up your subscription…";
+
+      try {
+        await loadTeams();
+        const hash = await sha256hex(raw);
+        const indexResp = await fetch(INDEX_URL + "?_=" + Date.now()); // cache-bust
+        let currentTeams = [];
+        if (indexResp.ok) {
+          const index = await indexResp.json();
+          currentTeams = index[hash] || [];
+        }
+
+        userEmail = raw;
+        selectedTeams = new Set(currentTeams);
+        formEmailEl.value = raw;
+
+        if (currentTeams.length > 0) {
+          lookupStatus.textContent = "";
+          currentLabel.textContent = `Found ${currentTeams.length} team${currentTeams.length !== 1 ? "s" : ""} on your subscription. Update below and save.`;
+        } else {
+          lookupStatus.textContent = "";
+          currentLabel.textContent = "No subscription found for that email — pick teams to subscribe.";
+        }
+
+        pickerSection.style.display = "block";
+        saveSection.style.display = "block";
+        renderSportTabs();
+        selectSport(0);
+        renderSelected();
+        updateForm();
+      } catch (e) {
+        lookupStatus.textContent = "Something went wrong. Please try again.";
+        lookupBtn.disabled = false;
+      }
+    });
+
+    lookupEmail.addEventListener("keydown", e => { if (e.key === "Enter") lookupBtn.click(); });
+
+    function renderSportTabs() {
+      sportTabs.innerHTML = "";
+      teamsData.sports.forEach((sport, i) => {
+        const tab = document.createElement("button");
+        tab.className = "tab";
+        tab.textContent = sport.name;
+        tab.addEventListener("click", () => selectSport(i));
+        sportTabs.appendChild(tab);
+      });
+    }
+
+    function selectSport(index) {
+      activeSport = index;
+      document.querySelectorAll("#sport-tabs .tab").forEach((t, i) => {
+        t.classList.toggle("active", i === index);
+      });
+      renderLeagueTabs();
+      selectLeague(0);
+    }
+
+    function renderLeagueTabs() {
+      leagueTabs.innerHTML = "";
+      const leagues = teamsData.sports[activeSport].leagues;
+      leagues.forEach((league, i) => {
+        const tab = document.createElement("button");
+        tab.className = "tab";
+        if (league.logo_url) {
+          tab.classList.add("tab-logo");
+          const img = document.createElement("img");
+          img.src = league.logo_url;
+          img.alt = league.name;
+          img.title = league.name;
+          img.className = "league-logo";
+          img.onerror = function () { this.remove(); tab.textContent = league.name; tab.classList.remove("tab-logo"); };
+          tab.appendChild(img);
+        } else {
+          tab.textContent = league.name;
+        }
+        tab.addEventListener("click", () => selectLeague(i));
+        leagueTabs.appendChild(tab);
+      });
+    }
+
+    function selectLeague(index) {
+      activeLeague = index;
+      document.querySelectorAll("#league-tabs .tab").forEach((t, i) => {
+        t.classList.toggle("active", i === index);
+      });
+      renderTeamGrid();
+    }
+
+    function renderTeamGrid() {
+      teamGrid.innerHTML = "";
+      const teams = [...teamsData.sports[activeSport].leagues[activeLeague].teams]
+        .sort((a, b) => a.name.localeCompare(b.name));
+      teams.forEach(team => {
+        const card = document.createElement("div");
+        card.className = "team-card" + (selectedTeams.has(team.id) ? " selected" : "");
+        card.style.backgroundColor = team.primary_color;
+        card.style.color = team.text_color;
+
+        const label = document.createElement("span");
+        label.className = "team-label";
+        label.textContent = team.short_name;
+
+        if (team.logo_url) {
+          const img = document.createElement("img");
+          img.src = team.logo_url;
+          img.alt = team.short_name;
+          img.className = "team-logo";
+          img.loading = "lazy";
+          img.onerror = function () { this.style.display = "none"; label.classList.add("no-logo"); };
+          card.appendChild(img);
+        } else {
+          label.classList.add("no-logo");
+        }
+
+        card.appendChild(label);
+        card.addEventListener("click", () => toggleTeam(team));
+        teamGrid.appendChild(card);
+      });
+    }
+
+    function toggleTeam(team) {
+      if (selectedTeams.has(team.id)) selectedTeams.delete(team.id);
+      else selectedTeams.add(team.id);
+      renderTeamGrid();
+      renderSelected();
+      updateForm();
+    }
+
+    function findTeam(id) {
+      for (const sport of teamsData.sports)
+        for (const league of sport.leagues) {
+          const t = league.teams.find(t => t.id === id);
+          if (t) return t;
+        }
+      return null;
+    }
+
+    function renderSelected() {
+      if (selectedTeams.size === 0) { selectedSection.style.display = "none"; return; }
+      selectedSection.style.display = "block";
+      selectedCount.textContent = "(" + selectedTeams.size + ")";
+      selectedTeamsEl.innerHTML = "";
+      selectedTeams.forEach(id => {
+        const team = findTeam(id);
+        if (!team) return;
+        const chip = document.createElement("span");
+        chip.className = "selected-chip";
+        chip.style.backgroundColor = team.primary_color;
+        chip.style.color = team.text_color;
+        const logoHtml = team.logo_url ? `<img src="${team.logo_url}" alt="" class="chip-logo">` : "";
+        chip.innerHTML = `${logoHtml}${team.short_name} <span class="remove">&times;</span>`;
+        chip.querySelector(".remove").addEventListener("click", () => toggleTeam(team));
+        selectedTeamsEl.appendChild(chip);
+      });
+    }
+
+    function updateForm() {
+      teamsInput.value = Array.from(selectedTeams).join(",");
+      submitBtn.disabled = selectedTeams.size === 0;
+    }
+
+    saveForm.addEventListener("submit", async e => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      saveStatus.textContent = "Saving…";
+      saveStatus.className = "";
+
+      try {
+        const resp = await fetch(FORMSPREE_ENDPOINT, {
+          method: "POST",
+          body: new FormData(saveForm),
+          headers: { Accept: "application/json" },
+        });
+        if (resp.ok) {
+          saveStatus.textContent = "Saved! Your digest will reflect these teams next send.";
+          saveStatus.className = "status-success";
+        } else {
+          throw new Error();
+        }
+      } catch {
+        saveStatus.textContent = "Something went wrong. Please try again.";
+        saveStatus.className = "status-error";
+        submitBtn.disabled = false;
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

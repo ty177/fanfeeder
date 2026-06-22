@@ -178,7 +178,7 @@ def build_email(team_data: list[dict], subscriber_email: str = "") -> str:
 
     # Build footer with unsubscribe + manage links
     unsubscribe_url = f"{SITE_URL}/unsubscribe.html?email={quote(subscriber_email)}" if subscriber_email else ""
-    manage_url = f"{SITE_URL}/"
+    manage_url = f"{SITE_URL}/manage.html?email={quote(subscriber_email)}" if subscriber_email else f"{SITE_URL}/manage.html"
 
     footer_links = ""
     if subscriber_email:
