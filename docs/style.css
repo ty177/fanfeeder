@@ -9,9 +9,9 @@
   --surface-3: #1a2840;
   --border:    #1c2b3a;
   --border-2:  #253344;
-  --accent:    #f97316;
-  --accent-dim: rgba(249,115,22,0.12);
-  --accent-hover: #ea6c0a;
+  --accent:    #e11d48;
+  --accent-dim: rgba(225,29,72,0.12);
+  --accent-hover: #be123c;
   --text:      #dde5ee;
   --text-2:    #6080a0;
   --text-3:    #2e445a;
@@ -123,7 +123,7 @@ nav.site-nav {
 
 .hero h1 em {
   font-style: normal;
-  background: linear-gradient(115deg, #f97316 20%, #fbbf24 80%);
+  background: linear-gradient(115deg, #e11d48 20%, #f43f5e 80%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
