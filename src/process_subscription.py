@@ -28,11 +28,18 @@ def save_subscribers(data: dict) -> None:
 def process_submissions(submissions: list[dict]) -> bool:
     """Process Formspree submissions, return True if subscribers changed."""
     data = load_subscribers()
-    existing = {s["email"]: s for s in data["subscribers"]}
+    # Normalize stored emails to lowercase so lookups are case-insensitive
+    existing = {s["email"].strip().lower(): s for s in data["subscribers"]}
     changed = False
 
-    # Sort oldest-first so the most recent action per email wins
-    submissions = sorted(submissions, key=lambda s: s.get("created_at") or s.get("_date") or "")
+    # Sort oldest-first so the most recent action per email wins.
+    # Tiebreak: subscribes before unsubscribes so unsubscribes always win ties.
+    def _sort_key(s):
+        date = s.get("_date") or s.get("created_at") or ""
+        action_order = 1 if s.get("action", "subscribe") == "unsubscribe" else 0
+        return (date, action_order)
+
+    submissions = sorted(submissions, key=_sort_key)
 
     for sub in submissions:
         email = sub.get("email", "").strip().lower()
@@ -40,11 +47,15 @@ def process_submissions(submissions: list[dict]) -> bool:
             continue
 
         action = sub.get("action", "subscribe")
+        print(f"  Processing {action} for {email}")
 
         if action == "unsubscribe":
             if email in existing:
                 existing[email]["active"] = False
-                changed = True
+            else:
+                # Guard against future re-subscription via stale Formspree submissions
+                existing[email] = {"email": email, "teams": [], "active": False}
+            changed = True
             continue
 
         teams_str = sub.get("teams", "")
