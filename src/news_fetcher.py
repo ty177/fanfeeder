@@ -7,12 +7,20 @@ from datetime import datetime, timezone
 from urllib.parse import quote
 
 import feedparser
+import requests
 
 from config import MAX_HEADLINES_PER_TEAM
 
 logger = logging.getLogger(__name__)
 
 GOOGLE_NEWS_RSS = "https://news.google.com/rss/search?q={query}&hl=en-US&gl=US&ceid=US:en"
+
+# Google News returns malformed XML to feedparser's default UA; a browser UA fixes it.
+_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (compatible; FanFeeder/1.0; +https://fanfeeder.fire-exit.com)"
+    )
+}
 
 
 def _decode_google_news_url(google_url: str) -> str:
@@ -56,7 +64,11 @@ def fetch_news(query: str, max_items: int = MAX_HEADLINES_PER_TEAM) -> list[dict
     logger.info(f"Fetching news for: {query}")
 
     try:
-        feed = feedparser.parse(url)
+        # Fetch manually so we can send a browser UA — feedparser's default UA
+        # causes Google News to return malformed XML.
+        resp = requests.get(url, headers=_HEADERS, timeout=15)
+        resp.raise_for_status()
+        feed = feedparser.parse(resp.content)
     except Exception as e:
         logger.error(f"Failed to fetch RSS feed for '{query}': {e}")
         return []
