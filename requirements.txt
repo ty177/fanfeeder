@@ -3,4 +3,3 @@ googlenewsdecoder>=0.1
 yt-dlp>=2024.1
 requests>=2.31
 python-dotenv>=1.0
-fastmcp>=2.0
