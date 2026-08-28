@@ -1,0 +1,34 @@
+name: Keep Workflows Alive
+
+on:
+  schedule:
+    # Every Sunday at noon UTC — keeps GitHub from disabling scheduled workflows
+    - cron: "0 12 * * 0"
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Keep workflows active
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const workflows = await github.rest.actions.listRepoWorkflows({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            for (const wf of workflows.data.workflows) {
+              if (wf.state === 'disabled_inactivity') {
+                await github.rest.actions.enableWorkflow({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: wf.id,
+                });
+                console.log(`Re-enabled: ${wf.name}`);
+              } else {
+                console.log(`Active: ${wf.name}`);
+              }
+            }
