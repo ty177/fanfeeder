@@ -86,6 +86,10 @@ def main():
         action="store_true",
         help="Write HTML to preview.html instead of sending email",
     )
+    parser.add_argument(
+        "--email",
+        help="Only send to this subscriber email (for testing)",
+    )
     args = parser.parse_args()
 
     logger.info("Starting FanFeeder Sports Digest")
@@ -97,6 +101,15 @@ def main():
     if not subscribers:
         logger.warning("No active subscribers found, exiting")
         return
+
+    # Filter to a single subscriber if --email is set
+    if args.email:
+        filter_email = args.email.strip().lower()
+        subscribers = [s for s in subscribers if s["email"].strip().lower() == filter_email]
+        if not subscribers:
+            logger.warning(f"No active subscriber found for {filter_email}, exiting")
+            return
+        logger.info(f"Filtered to single subscriber: {filter_email}")
 
     # 2. Find all unique teams needed across all subscribers
     unique_teams = get_unique_teams(subscribers, team_catalog)

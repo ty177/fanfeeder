@@ -6,7 +6,12 @@ on:
     - cron: "0 11 * * *"
     # 4:00 PM ET (21:00 UTC during EST, 20:00 UTC during EDT)
     - cron: "0 21 * * *"
-  workflow_dispatch: # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      email:
+        description: "Send only to this email (leave blank for all subscribers)"
+        required: false
+        default: ""
 
 jobs:
   send-digest:
@@ -58,4 +63,10 @@ jobs:
         env:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         working-directory: src
-        run: python main.py
+        run: |
+          EMAIL_FILTER="${{ github.event.inputs.email }}"
+          if [ -n "$EMAIL_FILTER" ]; then
+            python main.py --email "$EMAIL_FILTER"
+          else
+            python main.py
+          fi
