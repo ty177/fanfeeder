@@ -20,6 +20,7 @@ import json
 import logging
 import os
 import subprocess
+import time
 from datetime import datetime, timezone
 from typing import Optional
 from urllib.parse import quote
@@ -27,6 +28,23 @@ from urllib.parse import quote
 import feedparser
 import requests
 from fastmcp import FastMCP
+
+# ---------------------------------------------------------------------------
+# News cache — avoids hammering Google News on repeated MCP queries
+# ---------------------------------------------------------------------------
+_NEWS_CACHE: dict[str, tuple[float, list]] = {}  # query -> (timestamp, results)
+_NEWS_TTL = 20 * 60  # 20 minutes
+
+
+def _cached_fetch_news(query: str, max_items: int = 5) -> list[dict]:
+    now = time.time()
+    if query in _NEWS_CACHE:
+        ts, results = _NEWS_CACHE[query]
+        if now - ts < _NEWS_TTL:
+            return results
+    results = _fetch_news(query, max_items)
+    _NEWS_CACHE[query] = (now, results)
+    return results
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("fanfeeder-mcp")
@@ -282,7 +300,7 @@ def get_my_news(email: str, include_videos: bool = True) -> str:
             continue
 
         news_query = t.get("news_query") or t["name"]
-        headlines = _fetch_news(news_query)
+        headlines = _cached_fetch_news(news_query)
 
         block = [f"\n## {t['name']}"]
         if headlines:
@@ -331,7 +349,7 @@ def get_team_news(team_name: str, include_videos: bool = True) -> str:
         )
 
     news_query = t.get("news_query") or t["name"]
-    headlines = _fetch_news(news_query)
+    headlines = _cached_fetch_news(news_query)
 
     lines = [f"# {t['name']} ({t['league_name']})"]
 
