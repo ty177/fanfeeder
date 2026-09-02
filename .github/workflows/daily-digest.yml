@@ -1,11 +1,6 @@
 name: Sports News Digest
 
 on:
-  schedule:
-    # 6:00 AM ET (11:00 UTC during EST, 10:00 UTC during EDT)
-    - cron: "0 11 * * *"
-    # 4:00 PM ET (21:00 UTC during EST, 20:00 UTC during EDT)
-    - cron: "0 21 * * *"
   workflow_dispatch:
     inputs:
       email:
