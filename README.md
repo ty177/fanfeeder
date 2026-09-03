@@ -84,7 +84,7 @@ In GitHub → Settings → Secrets and variables → Actions, add:
 
 | Secret | Description |
 |---|---|
-| `GMAIL_APP_PASSWORD` | 16-character Google app password for the sending Gmail account |
+| `RESEND_API_KEY` | Resend API key (from resend.com — starts with `re_`) |
 | `FORMSPREE_API_KEY` | Formspree API key (from your form dashboard) |
 | `FORMSPREE_FORM_ID` | Formspree form ID (e.g. `mzdawwjk`) |
 
@@ -100,9 +100,11 @@ Add a CNAME record pointing to `<your-username>.github.io` and set the custom do
 
 Edit `src/config.py`:
 ```python
-EMAIL_SENDER = "you@gmail.com"
+RESEND_FROM = "FanFeeder <donotreply@yourdomain.com>"
 SITE_URL = "https://your-domain.com"
 ```
+
+Add your verified Resend domain at [resend.com/domains](https://resend.com/domains).
 
 ---
 
@@ -123,7 +125,7 @@ Deploy to Railway (serverless) and connect to Claude Desktop or claude.ai. See [
 ```bash
 pip install -r requirements.txt
 cd src
-GMAIL_APP_PASSWORD=your_app_password python main.py --preview
+RESEND_API_KEY=re_your_key python main.py --preview
 ```
 
 `--preview` writes the first subscriber's digest to `preview.html` instead of sending email. To send to a single address:
@@ -140,5 +142,5 @@ python main.py --email you@example.com
 - **GitHub Actions** — cron scheduler, seen-cache via `actions/cache`
 - **GitHub Pages** — static frontend
 - **Formspree** — form backend (no server required)
-- **Gmail SMTP** — email delivery
+- **Resend** — transactional email delivery from `donotreply@fanfeeder.fire-exit.com`
 - **FastMCP** — MCP server (optional)
