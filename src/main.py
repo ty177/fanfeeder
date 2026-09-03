@@ -10,15 +10,13 @@ from __future__ import annotations
 import argparse
 import logging
 import os
-import smtplib
 import sys
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 from pathlib import Path
 
+import resend
 from dotenv import load_dotenv
 
-from config import EMAIL_SENDER, SMTP_PORT, SMTP_SERVER
+from config import RESEND_FROM
 from email_builder import build_email
 from logo_checker import verify_logos
 from news_fetcher import fetch_news
@@ -54,26 +52,20 @@ def fetch_team_content(teams: list[dict]) -> dict:
 
 
 def send_email(html_content: str, recipient: str) -> None:
-    """Send the digest email via Gmail SMTP."""
-    app_password = os.environ.get("GMAIL_APP_PASSWORD")
-    if not app_password:
-        logger.error("GMAIL_APP_PASSWORD environment variable not set")
+    """Send the digest email via Resend."""
+    api_key = os.environ.get("RESEND_API_KEY")
+    if not api_key:
+        logger.error("RESEND_API_KEY environment variable not set")
         sys.exit(1)
 
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = "FanFeeder Sports Digest"
-    msg["From"] = EMAIL_SENDER
-    msg["To"] = recipient
-    msg.attach(MIMEText(html_content, "html"))
-
-    logger.info(f"Sending email to {recipient} via {SMTP_SERVER}:{SMTP_PORT}")
-    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-        server.ehlo()
-        server.starttls()
-        server.ehlo()
-        server.login(EMAIL_SENDER, app_password)
-        server.sendmail(EMAIL_SENDER, recipient, msg.as_string())
-
+    resend.api_key = api_key
+    logger.info(f"Sending email to {recipient} via Resend")
+    resend.Emails.send({
+        "from": RESEND_FROM,
+        "to": recipient,
+        "subject": "FanFeeder Sports Digest",
+        "html": html_content,
+    })
     logger.info(f"Email sent to {recipient}")
 
 

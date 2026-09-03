@@ -8,9 +8,7 @@ TEAMS_JSON_PATH = PROJECT_ROOT / "docs" / "teams.json"
 SUBSCRIBERS_JSON_PATH = PROJECT_ROOT / "data" / "subscribers.json"
 
 # Email settings
-EMAIL_SENDER = "tyahma@gmail.com"
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
+RESEND_FROM = "FanFeeder <donotreply@fanfeeder.fire-exit.com>"
 
 # Content limits
 MAX_HEADLINES_PER_TEAM = 5
